@@ -65,15 +65,25 @@ class Shoppingcart
 	attr_accessor :cart
 	def initialize
 		@cart = []
-		@cost = 0
+		@cost = 0.0
 	end
 	def add_item(name)
 		@cart.push(name)		
 	end
 	def factura #suma el valor del carrito de compra y aplica descuento
 		@cart.each do |item|
-binding.pry #aquí no funciona el método#prices de los productos
-			@cost += item.prices
+#binding.pry #aquí no funciona el método#prices de los productos
+			if item == "banana"
+				@cost += Fruit.new("Banana", 10.00).prices
+			elsif item == "orangejuice"
+				@cost += Item.new("Orange Juice", 10.00).prices
+			elsif item == "rice"
+				@cost += Item.new("Rice", 1).prices
+			elsif item == "vacuumcleener"
+				@cost += Houseware.new("Vacuum Cleener", 150.00).prices
+			elsif item == "anchovies"
+				@cost += Item.new("Anchovies", 2.00)
+			end
 		end
 		if @cart.length > 5
 			@cost = @cost - (@cost * 0.10) #descuento del 10%
@@ -128,9 +138,9 @@ class Shop
 			puts ">Ya puede elegir los productos que desee."
 			puts ">Haga la lista separada por comas, por favor."
 			product = gets.chomp
-			product_a = product.delete " " #borramos espacios
-			product_b = product_a.delete "." #borramos puntos
-			product_c = product_b.gsub("y", ",") #cambiamos "y" por ","
+			product_a = product.gsub(" ","") #borramos espacios
+			product_b = product_a.gsub(".","") #borramos puntos
+			product_c = product_b.gsub("y",",") #cambiamos "y" por ","
 			product_array = product_c.downcase.split "," #creamos array_productos
 			product_array.each do |cosa|
 				nombre.add_item(cosa) #añade el producto al carrito
@@ -148,10 +158,10 @@ class Shop
 				puts ">¿Pagará con tarjeta?"
 				pago = gets.chomp
 				if pago.downcase[0] == "s" #|| "y"
-					puts ">Muchas gracias, por comprar en RETROSHOP.ES que tenga un buen día y esperamos verle pronto."
+					puts ">Muchas gracias, por comprar en RETROSHOP.ES\n>que tenga un buen día y esperamos verle pronto."
 					return
 				else
-					puts ">Lo sentimos, este es un comercio online. No podemos continuar con el proceso de compra sin una tarjeta de crédito."	
+					puts ">Lo sentimos, este es un comercio online.\n>No podemos continuar con el proceso de compra sin una tarjeta de crédito."	
 				end
 			else
 				puts " "
@@ -193,7 +203,7 @@ retro_shop.add_to_stock(rice)
 retro_shop.add_to_stock(vacuum_cleener)
 retro_shop.add_to_stock(anchovies)
 #comando ejecutar compra en tienda
-binding.pry #aquí se puede añadir cosas al carrito de compras "prueba" y comprobar q el método#factura funciona
+#binding.pry #aquí se puede añadir cosas al carrito de compras "prueba" y comprobar q el método#factura funciona
 retro_shop.buy #esto lanza el script de la terminal
 
 #binding.pry
